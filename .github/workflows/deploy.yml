@@ -1,0 +1,24 @@
+name: Deploy AI Article Writer
+     on: [push]  # با هر بار push اجرا می‌شود
+
+     jobs:
+       deploy:
+         runs-on: ubuntu-latest
+         steps:
+           - name: Checkout Code
+             uses: actions/checkout@v4
+
+           - name: Setup Node.js
+             uses: actions/setup-node@v3
+             with:
+               node-version: 18
+
+           - name: Install Dependencies
+             run: npm install
+
+           - name: Run with Secret
+             env:
+               DEEPSEEK_API_KEY: ${{ secrets.raaz }}  # استفاده از Secret شما
+             run: |
+               echo "کلید API ایمن است: ${DEEPSEEK_API_KEY:0:4}..."  # نمایش جزئی برای تست
+               npm run build  # یا دستورات پروژه شما
