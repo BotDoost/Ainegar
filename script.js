@@ -17,7 +17,7 @@ async function generateArticle() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": "Bearer کلید-API-شما" // جایگزین کنید
+        "Authorization": "Bearer fac4cf69016d4b99a52f5ad6b107a6ca" // 
       },
       body: JSON.stringify({
         model: "deepseek-chat",
