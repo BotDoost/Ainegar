@@ -1,71 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="fa" dir="rtl">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>مقاله‌نویس هوشمند</title>
     <style>
-        body { font-family: Tahoma; padding: 20px; }
-        button { 
-            background: #4CAF50; 
-            color: white; 
-            padding: 10px 15px;
-            border: none;
-            cursor: pointer;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
         }
-        #result { margin-top: 15px; padding: 10px; border: 1px solid #ddd; }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 12px;
+            margin: 20px 0;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            resize: vertical;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: block;
+            margin: 0 auto;
+            width: 200px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 6px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            min-height: 100px;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        .error {
+            color: #e74c3c;
+        }
     </style>
 </head>
 <body>
     <h1>مقاله‌نویس هوشمند</h1>
-    <textarea id="topic" placeholder="مثال: هوش مصنوعی در پزشکی"></textarea>
-    <button id="generateBtn">تولید مقاله</button>
+    <textarea id="topic" placeholder="موضوع مقاله خود را وارد کنید... (مثال: تأثیر هوش مصنوعی بر پزشکی)"></textarea>
+    <button onclick="generateArticle()">تولید مقاله</button>
     <div id="result"></div>
 
     <script>
-        document.getElementById('generateBtn').addEventListener('click', async () => {
-            const topic = document.getElementById('topic').value.trim();
-            const resultDiv = document.getElementById('result');
+        // کلید API خود را اینجا قرار دهید
+        const API_KEY = "sk-your-api-key-here";
+        
+        async function generateArticle() {
+            const topic = document.getElementById("topic").value.trim();
+            const resultDiv = document.getElementById("result");
             
-            console.log('دکمه کلیک شد!'); // تست اولیه
-            
+            // 1. بررسی ورودی کاربر
             if (!topic) {
-                resultDiv.innerHTML = '⚠️ لطفاً موضوع را وارد کنید';
+                resultDiv.innerHTML = '<p class="error">⚠️ لطفاً موضوع مقاله را وارد کنید</p>';
                 return;
             }
-
-            resultDiv.innerHTML = '🔮 در حال اتصال به سرور...';
+            
+            // 2. نمایش وضعیت در حال پردازش
+            resultDiv.innerHTML = '<p class="loading">🔮 در حال تولید مقاله، لطفاً صبر کنید...</p>';
             
             try {
-                console.log('ارسال درخواست به API...'); // لاگ دوم
+                console.log("در حال ارسال درخواست به API...");
                 
-                const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-                    method: 'POST',
+                // 3. ارسال درخواست به API
+                const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                    method: "POST",
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer کلید-API-خود-را-اینجا-بگذارید'
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${API_KEY}`
                     },
                     body: JSON.stringify({
-                        model: 'deepseek-chat',
+                        model: "deepseek-chat",
                         messages: [{
-                            role: 'user',
-                            content: `مقاله‌ای 150 کلمه‌ای درباره ${topic} بنویس`
-                        }]
+                            role: "user",
+                            content: `مقاله‌ای 250 کلمه‌ای به زبان فارسی درباره ${topic} بنویس. مقاله باید شامل مقدمه، بدنه اصلی و نتیجه‌گیری باشد.`
+                        }],
+                        temperature: 0.7
                     })
                 });
-
-                console.log('پاسخ دریافت شد:', response); // لاگ پاسخ
                 
-                if (!response.ok) throw new Error(await response.text());
+                console.log("پاسخ دریافت شد:", response);
                 
+                // 4. بررسی پاسخ سرور
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || "خطا در سرور");
+                }
+                
+                // 5. نمایش نتیجه
                 const data = await response.json();
-                resultDiv.innerHTML = data.choices[0].message.content;
+                const article = data.choices[0].message.content;
+                
+                resultDiv.innerHTML = `
+                    <h3>مقاله درباره «${topic}»:</h3>
+                    <p>${article}</p>
+                `;
                 
             } catch (error) {
-                console.error('خطای کامل:', error); // لاگ خطا
-                resultDiv.innerHTML = '❌ خطا در ارتباط با سرور. لطفاً:<br>'
-                    + '1. اینترنت را بررسی کنید<br>'
-                    + '2. VPN روشن کنید (اگر نیاز است)';
+                console.error("خطای کامل:", error);
+                
+                // 6. مدیریت خطاها
+                let errorMessage = "خطا در تولید مقاله";
+                
+                if (error.message.includes("Failed to fetch")) {
+                    errorMessage = "مشکل در اتصال به اینترنت. لطفاً ارتباط شبکه خود را بررسی کنید.";
+                } else if (error.message.includes("401")) {
+                    errorMessage = "کلید API نامعتبر است. لطفاً کلید صحیح را وارد کنید.";
+                }
+                
+                resultDiv.innerHTML = `<p class="error">❌ ${errorMessage}</p>`;
             }
-        });
+        }
     </script>
 </body>
 </html>
