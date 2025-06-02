@@ -1,20 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<!-- به قسمت head این تگ را اضافه کنید -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self' https://*; connect-src https://*;">
-
-    <title>مقاله‌نویس هوش مصنوعی</title>
-    <link rel="stylesheet" href="style.css">
+    <title>مقاله‌نویس هوشمند</title>
+    <style>
+        body { font-family: Tahoma; max-width: 800px; margin: 0 auto; padding: 20px; }
+        textarea { width: 100%; height: 100px; margin: 10px 0; }
+        button { background: #4CAF50; color: white; border: none; padding: 10px 20px; }
+        #result { margin-top: 20px; border: 1px solid #ddd; padding: 15px; }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>مقاله‌نویس هوش مصنوعی</h1>
-        <input type="text" id="topic" placeholder="موضوع مقاله را وارد کنید...">
-        <button onclick="generateArticle()">تولید مقاله</button>
-        <div id="result"></div>
-    </div>
-    <script src="script.js"></script>
+    <h1>مقاله‌نویس هوشمند</h1>
+    <textarea id="topic" placeholder="موضوع مقاله را وارد کنید..."></textarea>
+    <button onclick="generateArticle()">تولید مقاله</button>
+    <div id="result"></div>
+
+    <script>
+        async function generateArticle() {
+            const topic = document.getElementById("topic").value;
+            const result = document.getElementById("result");
+            
+            if (!topic) {
+                result.innerHTML = "لطفاً موضوع را وارد کنید";
+                return;
+            }
+
+            result.innerHTML = "در حال تولید مقاله...";
+            
+            try {
+                const response = await fetch("https://api.deepseek.com/v1/chat/completions", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer کلید-API-خود-را-اینجا-بگذارید"
+                    },
+                    body: JSON.stringify({
+                        model: "deepseek-chat",
+                        messages: [{
+                            role: "user",
+                            content: `مقاله‌ای 200 کلمه‌ای به فارسی درباره ${topic} بنویس`
+                        }]
+                    })
+                });
+                
+                const data = await response.json();
+                result.innerHTML = data.choices[0].message.content;
+            } catch (error) {
+                result.innerHTML = "خطا در تولید مقاله. لطفاً دوباره تلاش کنید.";
+            }
+        }
+    </script>
 </body>
 </html>
