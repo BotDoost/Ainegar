@@ -3,478 +3,74 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تولید تصویر هوش مصنوعی | کاملاً رایگان و بدون API</title>
+    <title>تبدیل متن به عکس</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        
         body {
-            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
-            color: #fff;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .container {
-            width: 100%;
-            max-width: 800px;
-            background: rgba(10, 15, 40, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            font-family: 'Segoe UI', Tahoma, sans-serif;
             text-align: center;
+            background-color: #f5f5f5;
+            padding: 20px;
         }
-        
-        header {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        #text-input {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
         }
-        
-        h1 {
-            font-size: 2.8rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #ff9a9e, #fad0c4, #a18cd1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.9;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-        
-        .features {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 25px 0;
-        }
-        
-        .feature {
-            background: rgba(255, 255, 255, 0.08);
-            padding: 15px;
-            border-radius: 10px;
-            min-width: 180px;
-        }
-        
-        .feature i {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            color: #a18cd1;
-        }
-        
-        .input-group {
-            display: flex;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 50px;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        #prompt {
-            flex: 1;
-            padding: 18px 25px;
-            font-size: 1.1rem;
-            border: none;
-            background: transparent;
+        button {
+            background-color: #4CAF50;
             color: white;
-            outline: none;
-        }
-        
-        #prompt::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-        
-        #generate-btn {
-            background: linear-gradient(90deg, #ff9a9e 0%, #fad0c4 100%);
-            color: #2c3e50;
-            border: none;
-            padding: 0 35px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        #generate-btn:hover {
-            background: linear-gradient(90deg, #fad0c4 0%, #ff9a9e 100%);
-        }
-        
-        .examples {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin: 20px 0;
-        }
-        
-        .example-chip {
-            background: rgba(255, 255, 255, 0.1);
             padding: 10px 20px;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-        
-        .example-chip:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-        
-        .loading-section {
-            margin: 30px 0;
-            min-height: 150px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .loading {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-        }
-        
-        .loading-spinner {
-            width: 60px;
-            height: 60px;
-            border: 5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            border-top: 5px solid #ff9a9e;
-            animation: spin 1.5s linear infinite;
-            margin-bottom: 20px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .progress-bar {
-            width: 100%;
-            max-width: 400px;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 15px;
-        }
-        
-        .progress {
-            height: 100%;
-            background: linear-gradient(90deg, #ff9a9e, #fad0c4);
-            width: 0%;
-            transition: width 0.4s ease;
-        }
-        
-        #image-container {
-            margin: 30px auto;
-            max-width: 600px;
-            min-height: 400px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0, 0, 30, 0.2);
-            border-radius: 15px;
-            overflow: hidden;
-            border: 2px dashed rgba(255, 255, 255, 0.1);
-        }
-        
-        #image-container img {
-            max-width: 100%;
-            max-height: 70vh;
-            border-radius: 10px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-            display: none;
-        }
-        
-        .result-actions {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-        
-        .action-btn {
-            padding: 12px 25px;
-            border-radius: 50px;
             border: none;
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 16px;
         }
-        
-        .action-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateY(-3px);
-        }
-        
-        .footer {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            font-size: 0.9rem;
-            opacity: 0.7;
-        }
-        
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px;
-            }
-            
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .input-group {
-                flex-direction: column;
-                border-radius: 15px;
-            }
-            
-            #prompt {
-                width: 100%;
-                border-radius: 15px 15px 0 0;
-            }
-            
-            #generate-btn {
-                width: 100%;
-                padding: 15px;
-                border-radius: 0 0 15px 15px;
-            }
-            
-            .features {
-                flex-direction: column;
-            }
+        #canvas-container {
+            margin: 20px auto;
+            border: 1px dashed #ccc;
+            max-width: 600px;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>تولید تصویر هوش مصنوعی</h1>
-            <p class="subtitle">بدون نیاز به API - کاملاً رایگان و امن برای GitHub Pages</p>
-        </header>
-        
-        <div class="features">
-            <div class="feature">
-                <i class="fas fa-lock"></i>
-                <h3>بدون API</h3>
-                <p>نیازی به کلیدهای امنیتی نیست</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-bolt"></i>
-                <h3>سریع و آسان</h3>
-                <p>تولید تصویر در چند ثانیه</p>
-            </div>
-            <div class="feature">
-                <i class="fas fa-palette"></i>
-                <h3>کیفیت بالا</h3>
-                <p>تصاویر خیره‌کننده تولید می‌کند</p>
-            </div>
-        </div>
-        
-        <div class="input-group">
-            <input type="text" id="prompt" 
-                   placeholder="یک توصیف وارد کنید (مثال: شهر آینده‌نگر در شب با نورهای نئون)"
-                   value="شهر آینده‌نگر در شب با نورهای نئون، سبک سایبرپانک">
-            <button id="generate-btn">تولید تصویر</button>
-        </div>
-        
-        <div class="examples">
-            <div class="example-chip" onclick="setExample('یک سیب طلایی در فضای بیرونی زمین')">سیب فضایی</div>
-            <div class="example-chip" onclick="setExample('خرس قطبی در حال خوردن دونات در شهر')">خرس دونات‌خوار</div>
-            <div class="example-chip" onclick="setExample('کوهستان مه‌آلود با خانه درختی شیشه‌ای')">خانه درختی</div>
-            <div class="example-chip" onclick="setExample('روباه قرمز در جنگل جادویی شب')">روباه جادویی</div>
-        </div>
-        
-        <div class="loading-section">
-            <div class="loading" id="loading">
-                <div class="loading-spinner"></div>
-                <p>در حال تولید تصویر... لطفاً صبر کنید</p>
-                <div class="progress-bar">
-                    <div class="progress" id="progress"></div>
-                </div>
-            </div>
-            
-            <div id="image-container">
-                <p>تصویر تولید شده اینجا نمایش داده می‌شود</p>
-            </div>
-        </div>
-        
-        <div class="result-actions" id="result-actions" style="display:none">
-            <button class="action-btn" onclick="downloadImage()">
-                <i class="fas fa-download"></i> دانلود تصویر
-            </button>
-            <button class="action-btn" onclick="shareImage()">
-                <i class="fas fa-share-alt"></i> اشتراک‌گذاری
-            </button>
-            <button class="action-btn" onclick="newImage()">
-                <i class="fas fa-sync-alt"></i> تصویر جدید
-            </button>
-        </div>
-        
-        <div class="footer">
-            <p>این ابزار کاملاً رایگان است و هیچ API خارجی استفاده نمی‌کند</p>
-            <p>سازگار با GitHub Pages - بدون خطای امنیتی</p>
-        </div>
+    <h1>تبدیل متن به عکس</h1>
+    <input type="text" id="text-input" placeholder="متن خود را اینجا بنویسید...">
+    <button onclick="generateImage()">ساخت عکس</button>
+    <div id="canvas-container">
+        <canvas id="text-canvas" width="600" height="200"></canvas>
     </div>
+    <button onclick="downloadImage()" id="download-btn" disabled>دانلود عکس</button>
 
     <script>
-        // عناصر DOM
-        const generateBtn = document.getElementById('generate-btn');
-        const promptInput = document.getElementById('prompt');
-        const imageContainer = document.getElementById('image-container');
-        const loading = document.getElementById('loading');
-        const progressBar = document.getElementById('progress');
-        const resultActions = document.getElementById('result-actions');
-        
-        // تصاویر از پیش ساخته شده (بدون نیاز به API)
-        const preGeneratedImages = [
-            "https://i.ibb.co/7KkQb3j/city1.jpg",
-            "https://i.ibb.co/tmYzFzT/city2.jpg",
-            "https://i.ibb.co/1KdK1y2/city3.jpg",
-            "https://i.ibb.co/0n5s5QZ/city4.jpg",
-            "https://i.ibb.co/7WXy3jT/nature1.jpg",
-            "https://i.ibb.co/3FJxT9L/nature2.jpg",
-            "https://i.ibb.co/T1MxqB6/nature3.jpg",
-            "https://i.ibb.co/2cQqj5Y/nature4.jpg",
-            "https://i.ibb.co/jV5nNc6/fantasy1.jpg",
-            "https://i.ibb.co/0B0Jp1F/fantasy2.jpg",
-            "https://i.ibb.co/0D1Vd6k/fantasy3.jpg",
-            "https://i.ibb.co/0n0vC0f/fantasy4.jpg"
-        ];
-        
-        // تابع برای تنظیم مثال‌ها
-        function setExample(text) {
-            promptInput.value = text;
+        function generateImage() {
+            const text = document.getElementById('text-input').value;
+            const canvas = document.getElementById('text-canvas');
+            const ctx = canvas.getContext('2d');
+            
+            // پاک‌کردن کانواس
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // پس‌زمینه سفید
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // متن مشکی
+            ctx.fillStyle = 'black';
+            ctx.font = '30px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+            
+            // فعال کردن دکمه دانلود
+            document.getElementById('download-btn').disabled = false;
         }
-        
-        // تابع اصلی تولید تصویر
-        async function generateImage() {
-            const prompt = promptInput.value.trim();
-            
-            if (!prompt) {
-                alert("لطفاً متنی برای تولید تصویر وارد کنید");
-                return;
-            }
-            
-            // پاک کردن نتیجه قبلی
-            imageContainer.innerHTML = '<p>در حال تولید تصویر...</p>';
-            resultActions.style.display = 'none';
-            
-            // نمایش انیمیشن لودینگ
-            loading.style.display = 'flex';
-            
-            // شبیه‌سازی فرآیند تولید تصویر
-            simulateImageGeneration(prompt);
-        }
-        
-        // شبیه‌سازی فرآیند تولید تصویر
-        function simulateImageGeneration(prompt) {
-            // شبیه‌سازی نوار پیشرفت
-            let progress = 0;
-            const interval = setInterval(() => {
-                progress += Math.floor(Math.random() * 10) + 1;
-                if (progress > 100) progress = 100;
-                progressBar.style.width = `${progress}%`;
-                
-                if (progress === 100) {
-                    clearInterval(interval);
-                    
-                    // ایجاد تاخیر برای نمایش کامل نوار پیشرفت
-                    setTimeout(() => {
-                        // انتخاب تصادفی یک تصویر از لیست
-                        const randomIndex = Math.floor(Math.random() * preGeneratedImages.length);
-                        const selectedImage = preGeneratedImages[randomIndex];
-                        
-                        // نمایش تصویر
-                        displayGeneratedImage(selectedImage, prompt);
-                    }, 500);
-                }
-            }, 200);
-        }
-        
-        // نمایش تصویر تولید شده
-        function displayGeneratedImage(imageUrl, prompt) {
-            loading.style.display = 'none';
-            
-            imageContainer.innerHTML = `
-                <img src="${imageUrl}" alt="${prompt}" id="generated-image">
-                <p style="margin-top: 15px; font-size: 0.9rem; color: #aaa">
-                    تصویر تولید شده برای: "${prompt}"
-                </p>
-            `;
-            
-            resultActions.style.display = 'flex';
-        }
-        
-        // دانلود تصویر
+
         function downloadImage() {
-            const image = document.getElementById('generated-image');
-            if (!image) return;
-            
+            const canvas = document.getElementById('text-canvas');
             const link = document.createElement('a');
-            link.href = image.src;
-            link.download = 'ai-generated-image.jpg';
-            document.body.appendChild(link);
+            link.download = 'متن-من.png';
+            link.href = canvas.toDataURL('image/png');
             link.click();
-            document.body.removeChild(link);
         }
-        
-        // اشتراک‌گذاری تصویر
-        function shareImage() {
-            const image = document.getElementById('generated-image');
-            if (!image) return;
-            
-            if (navigator.share) {
-                navigator.share({
-                    title: 'تصویر تولید شده با هوش مصنوعی',
-                    text: promptInput.value,
-                    url: image.src
-                }).catch(console.error);
-            } else {
-                alert('امکان اشتراک‌گذاری در این مرورگر وجود ندارد. لطفاً از مرورگر دیگری استفاده کنید.');
-            }
-        }
-        
-        // تولید تصویر جدید
-        function newImage() {
-            generateImage();
-        }
-        
-        // رویداد کلیک برای دکمه
-        generateBtn.addEventListener('click', generateImage);
-        
-        // تولید خودکار هنگام بارگذاری صفحه
-        window.addEventListener('DOMContentLoaded', () => {
-            // نمایش تصویر اولیه
-            imageContainer.innerHTML = `
-                <img src="https://i.ibb.co/7KkQb3j/city1.jpg" alt="نمونه شهر آینده‌نگر" style="max-width: 90%">
-                <p style="margin-top: 15px; font-size: 0.9rem; color: #aaa">
-                    تصویر نمونه: شهر آینده‌نگر در شب با نورهای نئون
-                </p>
-            `;
-        });
     </script>
 </body>
 </html>
