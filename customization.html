@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <!-- همان هد index.html -->
+    <title>سفارشی‌سازی المان‌ها</title>
+</head>
+<body>
+    <!-- همان هدر index.html -->
+
+    <main>
+        <section class="customization-section">
+            <div class="section-header">
+                <h2>سفارشی‌سازی زنده المان‌ها</h2>
+                <p>تغییرات را اعمال کنید و نتیجه را بلافاصله ببینید</p>
+            </div>
+            
+            <div class="customization-container">
+                <div class="customization-controls">
+                    <div class="control-group">
+                        <h3>تنظیمات رنگ</h3>
+                        <div class="control-item">
+                            <label for="primary-color">رنگ اصلی:</label>
+                            <input type="color" id="primary-color" value="#4e54c8">
+                        </div>
+                        <div class="control-item">
+                            <label for="secondary-color">رنگ ثانویه:</label>
+                            <input type="color" id="secondary-color" value="#8f94fb">
+                        </div>
+                        <div class="control-item">
+                            <label for="text-color">رنگ متن:</label>
+                            <input type="color" id="text-color" value="#333333">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>تنظیمات سایه</h3>
+                        <div class="control-item">
+                            <label for="shadow-color">رنگ سایه:</label>
+                            <input type="color" id="shadow-color" value="#333333">
+                        </div>
+                        <div class="control-item">
+                            <label for="shadow-blur">تاری سایه:</label>
+                            <input type="range" id="shadow-blur" min="0" max="20" value="10">
+                        </div>
+                        <div class="control-item">
+                            <label for="shadow-spread">گسترش سایه:</label>
+                            <input type="range" id="shadow-spread" min="0" max="20" value="0">
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>تنظیمات فونت</h3>
+                        <div class="control-item">
+                            <label for="font-family">نوع فونت:</label>
+                            <select id="font-family">
+                                <option value="'Vazir', sans-serif">Vazir</option>
+                                <option value="'Segoe UI', Tahoma, Geneva, Verdana, sans-serif">Segoe UI</option>
+                                <option value="Arial, Helvetica, sans-serif">Arial</option>
+                                <option value="'Courier New', Courier, monospace">Courier New</option>
+                            </select>
+                        </div>
+                        <div class="control-item">
+                            <label for="font-size">اندازه فونت پایه:</label>
+                            <input type="range" id="font-size" min="12" max="24" value="16">
+                        </div>
+                    </div>
+                    
+                    <button id="reset-styles" class="btn-outline">بازنشانی تنظیمات</button>
+                </div>
+                
+                <div class="customization-preview">
+                    <div class="preview-header">
+                        <h3>پیش‌نمایش زنده</h3>
+                    </div>
+                    <div class="preview-content">
+                        <div class="preview-card glass-card">
+                            <h4>کارت نمونه</h4>
+                            <p>این یک کارت نمونه است که تغییرات روی آن اعمال می‌شود</p>
+                            <div class="preview-buttons">
+                                <button class="btn-gradient">دکمه اول</button>
+                                <button class="btn-outline">دکمه دوم</button>
+                            </div>
+                        </div>
+                        
+                        <div class="preview-nav">
+                            <ul>
+                                <li><a href="#" class="active">منوی 1</a></li>
+                                <li><a href="#">منوی 2</a></li>
+                                <li><a href="#">منوی 3</a></li>
+                                <li><a href="#">منوی 4</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- همان فوتر index.html -->
+    
+    <script src="js/customization.js"></script>
+</body>
+</html>
