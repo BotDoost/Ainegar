@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <!-- همان هد index.html -->
+    <title>تکنیک‌های پیشرفته HTML</title>
+</head>
+<body>
+    <!-- همان هدر index.html -->
+
+    <main>
+        <section class="techniques-section">
+            <div class="section-header">
+                <h2>تکنیک‌های پیشرفته HTML/CSS</h2>
+                <p>روش‌های حرفه‌ای که وبسایت شما را متمایز می‌کنند</p>
+            </div>
+            
+            <div class="technique-accordion">
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>طراحی شیشه‌ای (Glassmorphism)</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="content-grid">
+                            <div class="content-demo">
+                                <div class="glass-card-demo">
+                                    <h4>نمونه طراحی شیشه‌ای</h4>
+                                    <p>این یک کارت با افکت شیشه‌ای است</p>
+                                </div>
+                            </div>
+                            <div class="content-explain">
+                                <h4>چگونه این افکت را ایجاد کنیم؟</h4>
+                                <p>برای ایجاد افکت شیشه‌ای از این کد استفاده کنید:</p>
+                                <pre><code class="language-css">.glass-element {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}</code></pre>
+                                <p>این تکنیک برای طراحی‌های مدرن و مینیمال بسیار مناسب است.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3>انیمیشن‌های CSS با clip-path</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="content-grid">
+                            <div class="content-demo">
+                                <div class="clip-path-demo">
+                                    <div class="shape-changing"></div>
+                                </div>
+                            </div>
+                            <div class="content-explain">
+                                <h4>انیمیشن‌های پیشرفته با clip-path</h4>
+                                <p>clip-path به شما امکان می‌دهد اشکال پیچیده ایجاد کنید و بین آن‌ها انیمیشن بسازید:</p>
+                                <pre><code class="language-css">.shape {
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    transition: clip-path 0.5s ease-in-out;
+}
+
+.shape:hover {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}</code></pre>
+                                <p>این تکنیک برای ایجاد ترنزیشن‌های منحصر به فرد بین المان‌ها عالی است.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- آیتم‌های آکاردئون دیگر -->
+            </div>
+        </section>
+    </main>
+
+    <!-- همان فوتر index.html -->
+</body>
+</html>
